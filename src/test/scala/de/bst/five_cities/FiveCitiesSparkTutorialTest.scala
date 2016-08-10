@@ -1,4 +1,4 @@
-// # 5 Cities - Eine Mini-Tutorial zu Spark mit Java 8
+// # 5 Cities - Eine Mini-Tutorial zu Spark mit Scala
 //
 // Spark als Big-Data-Toolset ist in aller Munde.
 //
@@ -9,12 +9,8 @@
 //
 // Man kann es mit Scala, Python oder Java verwenden.
 // Hier eine kleine Intro für Scala-Entwickler,
-// die Java-Collections und funktionen höherer Ordnung kennen,
+// die Scala-Collections und funktionen höherer Ordnung kennen,
 // aber noch nie mit Spark gearbeitet haben.
-//
-// Falls ihr noch nie mit Java8-Stream gearbeitet habt: Es lohnt sich!
-// In der Klasse `Java8StreamSamplesTest` findet Ihr ein kleines Beispiel
-// als Appetitanreger.
 //
 // !HIDE
 package de.bst.five_cities

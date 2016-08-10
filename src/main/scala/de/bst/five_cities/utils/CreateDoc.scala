@@ -46,7 +46,7 @@ object CreateDoc {
     def format: String = {
       import BlockOfLines._
       blockType match {
-        case TYPE_CODE => if (!hide) s"```scala\n${lines mkString "\n"}```" else ""
+        case TYPE_CODE => if (!hide) s"```scala\n${lines mkString "\n"}\n```" else ""
         case TYPE_TEXT => lines map {
           l =>
             val matcher = COMMENT_PATTERN findFirstMatchIn l

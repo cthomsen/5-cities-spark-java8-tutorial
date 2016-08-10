@@ -1,4 +1,4 @@
-# 5 Cities - Eine Mini-Tutorial zu Spark mit Java 8
+# 5 Cities - Eine Mini-Tutorial zu Spark mit Scala
 
 Spark als Big-Data-Toolset ist in aller Munde.
 
@@ -9,12 +9,8 @@ lokalen Collection arbeiten.
 
 Man kann es mit Scala, Python oder Java verwenden.
 Hier eine kleine Intro für Scala-Entwickler,
-die Java-Collections und funktionen höherer Ordnung kennen,
+die Scala-Collections und funktionen höherer Ordnung kennen,
 aber noch nie mit Spark gearbeitet haben.
-
-Falls ihr noch nie mit Java8-Stream gearbeitet habt: Es lohnt sich!
-In der Klasse `Java8StreamSamplesTest` findet Ihr ein kleines Beispiel
-als Appetitanreger.
 
 
 
@@ -26,7 +22,8 @@ und Übungen als einzeln ausführbare Tests in eine Unit-Test-Klasse
 `FiveCitiesSparkTutorialTest` verpackt.
 
 ```scala
-class FiveCitiesSparkTutorialTest extends FlatSpec with Matchers with BeforeAndAfterAll {```
+class FiveCitiesSparkTutorialTest extends FlatSpec with Matchers with BeforeAndAfterAll {
+```
 
 
 
@@ -50,6 +47,7 @@ Die Methode `parallelize()` macht daraus ein *RDD*.
   "Five Cities Spark Tutorial" should "create an RDD" in {
     sampleRDD should not be null
   }
+
 ```
 ## Actions
 
@@ -71,6 +69,7 @@ ein Ergebnis an den Client. Ein paar Beispiele:
   it should "run reduce action" in {
     sampleRDD reduce (_ + _) shouldBe 42
   }
+
 ```
 ## Wohin mit den Ergebnissen?
 
@@ -95,6 +94,7 @@ durch `coalesce(1)` reduziert, um nur eine Datei zu bekommen.
     sampleRDD coalesce 1 saveAsTextFile targetDir
     (Source fromFile s"$targetDir/part-00000").getLines.toList should have size (4)
   }
+
 ```
 ## Dateien lesen
 
@@ -108,6 +108,7 @@ Koordinaten und ein paar statistischen Daten eingetragen sind.
   it should "read a file" in {
     (getSparkContext textFile (OpenGeoDB getTSVFile "LI").getPath collect) mkString "\n" should include ("Triesenberg")
   }
+
 ```
 ## Persistierung von Zwischenergebnissen
 
@@ -135,10 +136,12 @@ gespeichert sind.
     allLines should be > activeLines
     activeLines should not be 0
   }
+
 ```
 Für die folgenden Tests stellen wir eine Hilfsmethode bereit
 ```scala
-  private[five_cities] def getGeoObjectsRDD(countryId: String, mode: Int): RDD[GeoObject] =```
+  private[five_cities] def getGeoObjectsRDD(countryId: String, mode: Int): RDD[GeoObject] =
+```
 um die Geo-Daten einzulesen und zu cachen.
 
 ## Transformationen
@@ -172,6 +175,7 @@ Eine sehr häufig verwendete Transformation ist `map(..):
   it should "count by value in DE" in {
     (getGeoObjectsRDD("DE", MODE_WITH_POSITION) map (_.getLevel) countByValue) foreach (x => println(s"${x._1} -> ${x._2}"))
   }
+
 ```
 Sortierung ist eine weitere nützliche Transformation
 ```scala
@@ -181,6 +185,7 @@ Sortierung ist eine weitere nützliche Transformation
     sortedList foreach (x => println(x.getName))
     sortedList.head.getName shouldBe "Schaan"
   }
+
 ```
 ## Aufgabe - Bundesländer
 
@@ -192,6 +197,7 @@ Einwohner pro Quadratkilometer berechnen.
     println("Bundesländer:")
     einwohnerDichte foreach (p => println(f"  ${p._1}, ${p._2}%3.1f Einw./km2"))
   }
+
 ```
 ## Aufgabe - Five Cities
 Betrachte Städte mit mehr als 100.000 Einwohnern.
@@ -214,5 +220,6 @@ Finde zu allen Städten, die jeweils 5 am nächsten gelegenen.
     endRecordingStatistics
     result foreach (println)
   }
+
 ```
 
