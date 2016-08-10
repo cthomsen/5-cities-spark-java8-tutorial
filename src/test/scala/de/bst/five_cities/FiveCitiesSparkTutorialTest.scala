@@ -43,6 +43,7 @@ import scala.io.Source
 // `FiveCitiesSparkTutorialTest` verpackt.
 //
 class FiveCitiesSparkTutorialTest extends FlatSpec with Matchers with BeforeAndAfterAll {
+  //
   // !HIDE
   override def afterAll = SparkUtils.close
 

@@ -17,7 +17,7 @@ In der Klasse `Java8StreamSamplesTest` findet Ihr ein kleines Beispiel
 als Appetitanreger.
 
 !HIDE
-```java
+```scala
 package de.bst.five_cities
 
 import java.io.File
@@ -43,10 +43,11 @@ Damit ihr sofort herumprobieren könnt habe ich alle Beispiele
 und Übungen als einzeln ausführbare Tests in eine Unit-Test-Klasse
 `FiveCitiesSparkTutorialTest` verpackt.
 
-```java
+```scala
 class FiveCitiesSparkTutorialTest extends FlatSpec with Matchers with BeforeAndAfterAll {```
+
 !HIDE
-```java
+```scala
   override def afterAll = SparkUtils.close
 
   private def sampleRDD = getSparkContext parallelize List(3, 10, 20, 9)
@@ -68,7 +69,7 @@ relationalen Datenbanken.
 Für Testzwecke kann man auch eine Java-`List` als Datenquelle
 heranziehen.
 Die Methode `parallelize()` macht daraus ein *RDD*.
-```java
+```scala
   "Five Cities Spark Tutorial" should "create an RDD" in {
     sampleRDD should not be null
   }
@@ -81,7 +82,7 @@ ein Ergebnis an den Client. Ein paar Beispiele:
 `foreach(..)` führt für jede Zeile einen Befehl aus (lokal im Client),
 `reduce(..)` aggregiert die Daten, nach einer gegebenen Funktion.
 
-```java
+```scala
   it should "count RDDs" in {
     sampleRDD.count shouldBe 4
   }
@@ -106,7 +107,7 @@ mit `saveAsTextFile()` in Dateien schreiben lassen.
 in mehrere Dateien. Im Beispiel haben wir die Parallelität
 durch `coalesce(1)` reduziert, um nur eine Datei zu bekommen.
 
-```java
+```scala
   it should "copy the results of a RDD to a collection" in {
     sampleRDD.collect should contain theSameElementsAs List(3, 10, 20, 9)
   }
@@ -126,7 +127,7 @@ Für die nachfolgenden Beispiele nutzen wir ein paar Tab-separierte
 Dateien mit Geo-Daten der OpenGeoDB, in der Städte und Gemeinden mitsamt
 Koordinaten und ein paar statistischen Daten eingetragen sind.
 
-```java
+```scala
   it should "read a file" in {
     (getSparkContext textFile (OpenGeoDB getTSVFile "LI").getPath collect) mkString "\n" should include ("Triesenberg")
   }
@@ -147,7 +148,7 @@ hat. Mehr dazu unten im Abschnitt über das Debugging.
 http://localhost:4040/storage/ zeigt, welche Zwischenergebnisse
 gespeichert sind.
 
-```java
+```scala
   it should "use the Spark cache" in {
     val rdd = (getSparkContext textFile (OpenGeoDB getTSVFile "LI").getPath cache)
     val allLines = rdd.count
@@ -159,11 +160,11 @@ gespeichert sind.
   }
 ```
 Für die folgenden Tests stellen wir eine Hilfsmethode bereit
-```java
+```scala
   private[five_cities] def getGeoObjectsRDD(countryId: String, mode: Int): RDD[GeoObject] =```
 um die Geo-Daten einzulesen und zu cachen.
 !HIDE
-```java
+```scala
     geoObjectsRDDcache get countryId getOrElse {
       val columnMappingsBroadcast = getSparkContext broadcast (OpenGeoDB getTSVColumnMapping countryId)
       val geoRDD = ((getSparkContext textFile (OpenGeoDB getTSVFile countryId getPath))
@@ -195,7 +196,7 @@ auf dem RDD ausgeführt wird.
 
 Eine sehr häufig verwendete Transformation ist `map(..):
 
-```java
+```scala
   it should "transform lines to objects" in {
     val names = (getGeoObjectsRDD("LI", MODE_WITH_POSITION) map (_.getName) collect)
     println("Names in Liechtenstein:")
@@ -212,7 +213,7 @@ Eine sehr häufig verwendete Transformation ist `map(..):
   }
 ```
 Sortierung ist eine weitere nützliche Transformation
-```java
+```scala
   it should "sort a RDD" in {
     val sortedList = (getGeoObjectsRDD("LI", MODE_WITH_POSITION) sortBy(_.getEinwohner, false, 1) collect)
     println("Liechtenstein wohlsortiert:")
@@ -223,7 +224,7 @@ Sortierung ist eine weitere nützliche Transformation
 ## Aufgabe - Bundesländer
 
 Einwohner pro Quadratkilometer berechnen.
-```java
+```scala
   it should "show the German Bundesländer" in {
     val filter = getGeoObjectsRDD("DE", MODE_ALL) filter (_.getLevel == 3)
     val einwohnerDichte = FiveCitiesSparkTutorialSolutions einwohnerDichte filter
@@ -234,7 +235,7 @@ Einwohner pro Quadratkilometer berechnen.
 ## Aufgabe - Five Cities
 Betrachte Städte mit mehr als 100.000 Einwohnern.
 Finde zu allen Städten, die jeweils 5 am nächsten gelegenen.
-```java
+```scala
   it should "calculate the five nearest cities for every city with more than 100000 inhabitants" in {
     val cities = (getGeoObjectsRDD("DE", MODE_WITH_POSITION) filter (g => g.getLevel == 6 && g.getEinwohner > 100000) cache)
     startRecordingStatistics(cities)
@@ -255,7 +256,7 @@ Finde zu allen Städten, die jeweils 5 am nächsten gelegenen.
 ```
 
 !HIDE
-```java
+```scala
   private[five_cities] var start: Instant = null
   private[five_cities] var end: Instant = null
   private[five_cities] var distanceCalculationsStart: Long = 0
