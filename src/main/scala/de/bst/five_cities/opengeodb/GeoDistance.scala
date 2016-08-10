@@ -2,14 +2,15 @@ package de.bst.five_cities.opengeodb
 
 import java.lang.Double.doubleToLongBits
 import java.lang.Math._
+import java.lang.Double.compare
 import java.util.concurrent.atomic.AtomicLong
 
 @SerialVersionUID(-7050866324523179632L)
 class GeoDistance(val a: String, val b: String, val dist: Double = .0) extends Comparable[GeoDistance] with Serializable {
   val PRIME = 31
 
-  def compareTo(o: GeoDistance): Int = a compareTo o.a match {
-    case 0 => (dist - o.dist).toInt
+  override def compareTo(o: GeoDistance): Int = a compareTo o.a match {
+    case 0 => compare(dist, o.dist)
     case x => x
   }
 
@@ -22,25 +23,6 @@ class GeoDistance(val a: String, val b: String, val dist: Double = .0) extends C
     val temp = doubleToLongBits(dist)
     PRIME * result + (temp ^ (temp >>> 32)).toInt
   }
-
-  /*
-  override def equals(obj: AnyRef): Boolean = {
-    if (this eq obj) return true
-    if (obj == null) return false
-    if (getClass ne obj.getClass) return false
-    val other: GeoDistance = obj.asInstanceOf[GeoDistance]
-    if (a == null) {
-      if (other.a != null) return false
-    }
-    else if (!(a == other.a)) return false
-    if (b == null) {
-      if (other.b != null) return false
-    }
-    else if (!(b == other.b)) return false
-    if (doubleToLongBits(dist) != doubleToLongBits(other.dist)) return false
-    return true
-  }
-  */
 }
 
 object GeoDistance {

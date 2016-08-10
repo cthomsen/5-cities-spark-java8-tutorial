@@ -67,17 +67,6 @@ class GeoObject(val id: Int, val splits: Seq[String], val mapping: Map[String, I
     if (asString.isEmpty) 0
     else asString.toInt
   }
-
-  /*
-  override def equals(obj: AnyRef): Boolean = {
-    if (this eq obj) return true
-    if (obj == null) return false
-    if (getClass ne obj.getClass) return false
-    val other: GeoObject = obj.asInstanceOf[GeoObject]
-    if (id != other.id) return false
-    return true
-  }
-  */
 }
 
 object GeoObject {
