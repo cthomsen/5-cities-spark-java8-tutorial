@@ -40,9 +40,9 @@ Eine zu verarbeitende Datenmenge in Spark nennt man *RDD*.
 Spark kann Daten aus den verschiedensten Quellen lesen,
 z. B. aus hdfs-Dateien in Hadoop, aus lokalen Dateien oder aus
 relationalen Datenbanken.
-Für Testzwecke kann man auch eine Java-`List` als Datenquelle
+Für Testzwecke kann man auch eine Scala-`List` als Datenquelle
 heranziehen.
-Die Methode `parallelize()` macht daraus ein *RDD*.
+Die Methode `parallelize()` macht daraus ein *RDD* -> `sc parallelize List(1, 2, 3)`
 ```scala
   "Five Cities Spark Tutorial" should "create an RDD" in {
     sampleRDD should not be null
@@ -74,7 +74,7 @@ ein Ergebnis an den Client. Ein paar Beispiele:
 ## Wohin mit den Ergebnissen?
 
 Wenn die Ergebnismenge nicht zu gross ist, kann man
-sie sich als lokale Java-`List` mittels `collect()` geben lassen.
+sie sich als lokale Scala-`List` mittels `collect()` geben lassen.
 Bei grösseren Datenmengen kann man sich mit `takeSample(..)` eine
 Stichprobe geben lassen, oder das Ergebnis
 mit `saveAsTextFile()` in Dateien schreiben lassen.
