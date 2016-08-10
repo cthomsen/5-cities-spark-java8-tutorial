@@ -26,7 +26,7 @@ public class CreateDoc {
 						CreateDoc::mergeLinesOfSameTypeToBlocks, //
 						dontCombine())
 				.stream() //
-				.flatMap(block -> block.format());
+				.flatMap(BlockOfLines::format);
 
 		Files.write(Paths.get(target), (Iterable<String>) documentLines::iterator);
 	}
