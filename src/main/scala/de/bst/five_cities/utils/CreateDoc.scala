@@ -29,11 +29,10 @@ object CreateDoc {
     def apply(line: String): BlockOfLines =
       new BlockOfLines(line :: Nil, typeOf(line), HIDE_PATTERN findFirstIn line isDefined)
 
-    def typeOf(line: String): String = line match {
-      case HIDE_PATTERN(_) => TYPE_CODE
-      case COMMENT_PATTERN(_) => TYPE_TEXT
-      case _ => TYPE_CODE
-    }
+    def typeOf(line: String): String =
+      if (HIDE_PATTERN findFirstIn line isDefined) TYPE_CODE
+      else if (COMMENT_PATTERN findFirstIn line isDefined) TYPE_TEXT
+      else TYPE_CODE
   }
 
   private class BlockOfLines(var lines: List[String], val blockType: String, var hide: Boolean) {

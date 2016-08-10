@@ -16,25 +16,7 @@ Falls ihr noch nie mit Java8-Stream gearbeitet habt: Es lohnt sich!
 In der Klasse `Java8StreamSamplesTest` findet Ihr ein kleines Beispiel
 als Appetitanreger.
 
-!HIDE
-```scala
-package de.bst.five_cities
 
-import java.io.File
-import java.time.Instant
-import java.time.temporal.ChronoUnit.SECONDS
-
-import de.bst.five_cities.solutions.FiveCitiesSparkTutorialSolutions
-import org.apache.commons.io.FileUtils.deleteDirectory
-import de.bst.five_cities.opengeodb.{GeoDistance, OpenGeoDB, GeoObject}
-import de.bst.five_cities.utils.SparkUtils
-import de.bst.five_cities.utils.SparkUtils.getSparkContext
-import org.apache.spark.rdd.RDD
-import org.scalatest.{Matchers, BeforeAndAfterAll, FlatSpec}
-
-import scala.collection.mutable
-import scala.io.Source
-```
 
 Das Projekt könnt ihr als Maven-Projekt direkt in Eure Entwicklungsumgebung laden,
 in Eclipse beispielsweise mit *"File | Import ... | Existing Maven Projects"*.
@@ -46,12 +28,7 @@ und Übungen als einzeln ausführbare Tests in eine Unit-Test-Klasse
 ```scala
 class FiveCitiesSparkTutorialTest extends FlatSpec with Matchers with BeforeAndAfterAll {```
 
-!HIDE
-```scala
-  override def afterAll = SparkUtils.close
 
-  private def sampleRDD = getSparkContext parallelize List(3, 10, 20, 9)
-```
 
 ## Der `SparkContext` und ein *RDD*
 
@@ -163,23 +140,7 @@ Für die folgenden Tests stellen wir eine Hilfsmethode bereit
 ```scala
   private[five_cities] def getGeoObjectsRDD(countryId: String, mode: Int): RDD[GeoObject] =```
 um die Geo-Daten einzulesen und zu cachen.
-!HIDE
-```scala
-    geoObjectsRDDcache get countryId getOrElse {
-      val columnMappingsBroadcast = getSparkContext broadcast (OpenGeoDB getTSVColumnMapping countryId)
-      val geoRDD = ((getSparkContext textFile (OpenGeoDB getTSVFile countryId getPath))
-        filter (!_.startsWith("#"))
-        map (GeoObject(_, columnMappingsBroadcast)))
-      val cachedRDD = (if (mode == MODE_ALL) geoRDD else geoRDD filter (_.hasPosition)).cache
-      geoObjectsRDDcache += countryId -> cachedRDD
-      cachedRDD
-    }
 
-  var geoObjectsRDDcache = mutable.HashMap[String, RDD[GeoObject]]()
-
-  val MODE_ALL = 0
-  val MODE_WITH_POSITION = 1
-```
 ## Transformationen
 
 Zur Verarbeitung von RDD's kennt Spark neben *Aktionen*
@@ -255,41 +216,3 @@ Finde zu allen Städten, die jeweils 5 am nächsten gelegenen.
   }
 ```
 
-!HIDE
-```scala
-  private[five_cities] var start: Instant = null
-  private[five_cities] var end: Instant = null
-  private[five_cities] var distanceCalculationsStart: Long = 0
-  private[five_cities] var distanceCalculationsEnd: Long = 0
-  private[five_cities] var rddProcessed: RDD[_] = null
-
-  def startRecordingStatistics(rdd: RDD[_]) {
-    distanceCalculationsStart = GeoDistance.countDistancesCalculations.get
-    rddProcessed = rdd
-    start = Instant.now
-  }
-
-  def endRecordingStatistics {
-    distanceCalculationsEnd = GeoDistance.countDistancesCalculations.get
-    end = Instant.now
-    println(s"Seconds processing: ${start until (end, SECONDS)}")
-    println(s"Number of input rows: ${rddProcessed.count}")
-    println(s"Number of distance calculations: ${distanceCalculationsEnd - distanceCalculationsStart}")
-  }
-
-  /*
-  @Test
-  def fiveVillages {
-    val cities: JavaRDD[GeoObject] = getGeoObjectsRDD("DE", WITH_POSITION).filter(geo -> geo.getLevel() == 6).cache
-    val targetDir: String = "tmp/cities"
-    deleteDirectory(new File(targetDir))
-    startRecordingStatistics(cities)
-    val villageClusters: JavaRDD[util.List[GeoDistance]] = FiveCitiesSparkTutorialSolutions.solutionFiveVillages(cities)
-    villageClusters.saveAsTextFile(targetDir)
-    endRecordingStatistics
-    out.println
-    printStatistics
-    System.out.println("Results written to: " + targetDir)
-  }
-  */
-}```
