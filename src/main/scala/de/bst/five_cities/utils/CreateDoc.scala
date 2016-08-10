@@ -36,9 +36,10 @@ object CreateDoc {
     }
   }
 
-  private class BlockOfLines(var lines: List[String], val blockType: String, val hide: Boolean) {
+  private class BlockOfLines(var lines: List[String], val blockType: String, var hide: Boolean) {
     def merge(other: BlockOfLines) = {
       lines = lines ::: other.lines
+      hide = hide || other.hide
       this
     }
 
