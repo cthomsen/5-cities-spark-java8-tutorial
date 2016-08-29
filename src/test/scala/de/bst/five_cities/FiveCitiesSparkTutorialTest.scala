@@ -43,8 +43,6 @@ class FiveCitiesSparkTutorialTest extends FlatSpec with Matchers with BeforeAndA
   // !HIDE
   override def afterAll = SparkUtils.close
 
-  private def sampleRDD = getSparkContext parallelize List(3, 10, 20, 9)
-
   //
   // ## Der `SparkContext` und ein *RDD*
   //
@@ -62,6 +60,8 @@ class FiveCitiesSparkTutorialTest extends FlatSpec with Matchers with BeforeAndA
   // Für Testzwecke kann man auch eine Scala-`List` als Datenquelle
   // heranziehen.
   // Die Methode `parallelize()` macht daraus ein *RDD* -> `sc parallelize List(1, 2, 3)`
+  private def sampleRDD = getSparkContext parallelize List(3, 10, 20, 9)
+  
   "Five Cities Spark Tutorial" should "create an RDD" in {
     sampleRDD should not be null
   }

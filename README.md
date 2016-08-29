@@ -44,6 +44,8 @@ Für Testzwecke kann man auch eine Scala-`List` als Datenquelle
 heranziehen.
 Die Methode `parallelize()` macht daraus ein *RDD* -> `sc parallelize List(1, 2, 3)`
 ```scala
+  private def sampleRDD = getSparkContext parallelize List(3, 10, 20, 9)
+  
   "Five Cities Spark Tutorial" should "create an RDD" in {
     sampleRDD should not be null
   }
