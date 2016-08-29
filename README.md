@@ -45,7 +45,7 @@ heranziehen.
 Die Methode `parallelize()` macht daraus ein *RDD* -> `sc parallelize List(1, 2, 3)`
 ```scala
   private def sampleRDD = getSparkContext parallelize List(3, 10, 20, 9)
-  
+
   "Five Cities Spark Tutorial" should "create an RDD" in {
     sampleRDD should not be null
   }
@@ -215,7 +215,7 @@ Finde zu allen Städten, die jeweils 5 am nächsten gelegenen.
       "Lübeck", "Kiel", "Bremerhaven", "Bremen", "Oldenburg in Oldenburg")
   }
 
-  it should "calculate the five nearest cities for every city" in {
+  it should "calculate the five nearest cities for every city with more than 5000 inhabitants" in {
     val cities = (getGeoObjectsRDD("DE", MODE_WITH_POSITION) filter (g => g.getLevel == 6 && g.getEinwohner > 5000) cache)
     startRecordingStatistics(cities)
     val result = (FiveCitiesSparkTutorialSolutions solutionFiveCities cities collect)
