@@ -189,6 +189,25 @@ Sortierung ist eine weitere nützliche Transformation
   }
 
 ```
+## Sampling
+
+Häufig möchte ich für Tests nur einen Teil der gesamten Datenmenge verwenden.
+Die Sample Methode der RDDs reduziert die Anzahl der Zeilen auf den angegebenen Anteil.
+```scala
+  it should "use a sample RDD of all cities" in {
+    val cities = getGeoObjectsRDD("DE", MODE_WITH_POSITION) filter (g => g.getLevel == 6)
+    cities sample (false, 0.001) map (_.getName) foreach (println)
+  }
+
+```
+In anderen fällen ist es gewünscht aus einem großen RDD nur ein Teil der Daten in eine lokale Liste zu ziehen (z.B. für Debugging).
+```scala
+  it should "take a sample from a RDD of all cities" in {
+    val cities = getGeoObjectsRDD("DE", MODE_WITH_POSITION) filter (g => g.getLevel == 6)
+    cities map (_.getName) takeSample (false, 10) foreach (println)
+  }
+
+```
 ## Aufgabe - Bundesländer
 
 Einwohner pro Quadratkilometer berechnen.
@@ -213,6 +232,7 @@ Finde zu allen Städten, die jeweils 5 am nächsten gelegenen Städte.
     result foreach (println)
     result filter (_.head.a == "Hamburg") flatMap (_ map (_.b)) should contain theSameElementsAs List(
       "Lübeck", "Kiel", "Bremerhaven", "Bremen", "Oldenburg in Oldenburg")
+    cities unpersist true
   }
 
   it should "calculate the five nearest cities for every city with more than 5000 inhabitants" in {
@@ -221,6 +241,7 @@ Finde zu allen Städten, die jeweils 5 am nächsten gelegenen Städte.
     val result = (FiveCitiesSparkTutorialSolutions solutionFiveCities cities collect)
     endRecordingStatistics
     result foreach (println)
+    cities unpersist true
   }
 
 ```
