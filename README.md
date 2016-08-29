@@ -214,6 +214,9 @@ Einwohner pro Quadratkilometer berechnen.
 ```scala
   it should "show the German Bundesländer" in {
     val bundeslaender = getGeoObjectsRDD("DE", MODE_ALL) filter (_.getLevel == 3)
+```
+Kommentiere die nachfolgende Zeile aus und ersetze sie durch Deine Lösung.
+```scala
     val einwohnerDichte = FiveCitiesSparkTutorialSolutions einwohnerDichte bundeslaender
     println("Bundesländer:")
     einwohnerDichte foreach (p => println(f"  ${p._1}, ${p._2}%3.1f Einw./km2"))
