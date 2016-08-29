@@ -209,8 +209,8 @@ class FiveCitiesSparkTutorialTest extends FlatSpec with Matchers with BeforeAndA
   //
   // Einwohner pro Quadratkilometer berechnen.
   it should "show the German Bundesländer" in {
-    val filter = getGeoObjectsRDD("DE", MODE_ALL) filter (_.getLevel == 3)
-    val einwohnerDichte = FiveCitiesSparkTutorialSolutions einwohnerDichte filter
+    val bundeslaender = getGeoObjectsRDD("DE", MODE_ALL) filter (_.getLevel == 3)
+    val einwohnerDichte = FiveCitiesSparkTutorialSolutions einwohnerDichte bundeslaender
     println("Bundesländer:")
     einwohnerDichte foreach (p => println(f"  ${p._1}, ${p._2}%3.1f Einw./km2"))
   }
