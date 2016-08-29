@@ -15,7 +15,7 @@ aber noch nie mit Spark gearbeitet haben.
 
 
 Das Projekt könnt ihr als Maven-Projekt direkt in Eure Entwicklungsumgebung laden,
-in Eclipse beispielsweise mit *"File | Import ... | Existing Maven Projects"*.
+in IntelliJ beispielsweise mit *"File | Open"*.
 
 Damit ihr sofort herumprobieren könnt habe ich alle Beispiele
 und Übungen als einzeln ausführbare Tests in eine Unit-Test-Klasse
