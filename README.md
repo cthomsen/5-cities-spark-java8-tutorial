@@ -202,8 +202,8 @@ Einwohner pro Quadratkilometer berechnen.
 
 ```
 ## Aufgabe - Five Cities
-Betrachte Städte mit mehr als 100.000 Einwohnern.
-Finde zu allen Städten, die jeweils 5 am nächsten gelegenen.
+Betrachte Städte mit mehr als 100.000 (5.000) Einwohnern.
+Finde zu allen Städten, die jeweils 5 am nächsten gelegenen Städte.
 ```scala
   it should "calculate the five nearest cities for every city with more than 100000 inhabitants" in {
     val cities = (getGeoObjectsRDD("DE", MODE_WITH_POSITION) filter (g => g.getLevel == 6 && g.getEinwohner > 100000) cache)
